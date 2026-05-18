@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF14 Photo Framer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <div class="controls">
+            <h2 style="font-size: 1.1rem; margin: 0 0 25px;">FF14 Photo Framer</h2>
+
+            <div class="control-group">
+                <label>1. Aspect Ratio</label>
+                <div class="toggle-group">
+                    <button id="setStandard" class="active">Standard</button>
+                    <button id="setWide">Wide</button>
+                    <button id="setSquare">Square</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>2. Orientation</label>
+                <div class="toggle-group" id="orientationGroup">
+                    <button id="setVertical" class="active">Vertical</button>
+                    <button id="setHorizontal">Horizontal</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>3. Select Filter</label>
+                <div id="filterSelector"></div>
+            </div>
+
+            <div class="control-group">
+                <label>4. Filter Strength</label>
+                <input type="range" id="filterRange" min="0" max="100" value="50">
+            </div>
+
+            <div class="control-group">
+                <label>5. Info Text (Auto Region)</label>
+                <input type="text" id="posInput" placeholder="Location Name ( 0.0 , 0.0 )" maxlength="100">
+            </div>
+
+            <div class="control-group">
+                <label>6. Post Text</label>
+                <textarea id="xPostText"
+                    style="width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; resize: vertical; font-family: inherit;"
+                    rows="3"></textarea>
+            </div>
+
+            <button id="downloadBtn">Export Image</button>
+            <button id="copyBtn">Copy Text for X</button>
+            <input type="file" id="upload" accept="image/*" style="display:none">
+        </div>
+
+        <div class="preview-area" id="dropZone">
+            <canvas id="mainCanvas"></canvas>
+            <div id="dropHint" class="drop-hint">Drop Image Here or Click to Start</div>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+:root {
+    --accent: #333;
+    --bg: #dcdce0;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: var(--bg);
+    margin: 0;
+    color: #333;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.controls {
+    width: 340px;
+    background: white;
+    padding: 30px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+    z-index: 10;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.preview-area {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: var(--bg);
+    position: relative;
+    cursor: pointer;
+}
+
+.control-group {
+    margin-bottom: 24px;
+}
+
+label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: #999;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.toggle-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+button {
+    flex: 1;
+    min-width: 100px;
+    padding: 12px;
+    border: 1px solid #eee;
+    background: white;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    color: #666;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background: #f9f9f9;
+}
+
+button.active {
+    background: #333;
+    color: white;
+    font-weight: bold;
+    border-color: #333;
+}
+
+#downloadBtn, #copyBtn {
+    background: #333;
+    color: white;
+    border: none;
+    font-weight: bold;
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    margin-top: 20px;
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.18);
+    background: #fff;
+    cursor: grab;
+}
+
+.drop-hint {
+    position: absolute;
+    pointer-events: none;
+    color: #aaa;
+    text-align: center;
+    border: 2px dashed #ccc;
+    padding: 40px;
+    border-radius: 12px;
+}
+
+#filterSelector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
