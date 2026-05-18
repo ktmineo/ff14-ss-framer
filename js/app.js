@@ -17,6 +17,8 @@ let currentFilterKey = 'analog';
 let areaDict = {};
 const canvas = document.getElementById('mainCanvas'), ctx = canvas.getContext('2d'),
     upload = document.getElementById('upload'), dropZone = document.getElementById('dropZone'),
+    selectImageBtn = document.getElementById('selectImageBtn'),
+    changeImageBtn = document.getElementById('changeImageBtn'),
     posInput = document.getElementById('posInput'), downloadBtn = document.getElementById('downloadBtn'),
     copyBtn = document.getElementById('copyBtn'),
     xPostText = document.getElementById('xPostText'),
@@ -36,11 +38,20 @@ function sanitizeText(str) {
 
 // --- Initialization ---
 async function init() {
+    updateAppHeight();
     await loadDictionary();
     createFilterButtons();
     updateXPostText(); // Initialize
     draw();
 }
+
+function updateAppHeight() {
+    const height = window.innerHeight || document.documentElement.clientHeight;
+    document.documentElement.style.setProperty('--app-height', `${height}px`);
+}
+
+window.addEventListener('resize', updateAppHeight);
+window.visualViewport?.addEventListener('resize', updateAppHeight);
 
 async function loadDictionary() {
     try {
@@ -88,8 +99,14 @@ function updateXPostText() {
 }
 
 // --- Interaction ---
-dropZone.onclick = (e) => { if (!currentImg && e.target === dropZone) upload.click(); };
+dropZone.onclick = (e) => {
+    if (e.target.closest('button')) return;
+    if (!currentImg) upload.click();
+};
 canvas.onclick = (e) => { if (!currentImg) upload.click(); e.stopPropagation(); };
+selectImageBtn.onclick = () => upload.click();
+dropHint.onclick = (e) => { e.stopPropagation(); upload.click(); };
+changeImageBtn.onclick = (e) => { e.stopPropagation(); upload.click(); };
 dropZone.ondragover = e => e.preventDefault();
 dropZone.ondrop = e => { e.preventDefault(); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); };
 upload.onchange = e => handleFile(e.target.files[0]);
@@ -99,7 +116,13 @@ function handleFile(file) {
     const reader = new FileReader();
     reader.onload = e => {
         const img = new Image();
-        img.onload = () => { currentImg = img; dropHint.style.display = "none"; draw(); };
+        img.onload = () => {
+            currentImg = img;
+            dropHint.style.display = "none";
+            dropZone.classList.add('has-image');
+            document.querySelector('.controls')?.scrollTo({ top: 0, behavior: 'auto' });
+            draw();
+        };
         img.src = e.target.result;
     };
     reader.readAsDataURL(file);
@@ -170,17 +193,35 @@ posInput.oninput = () => {
     updateXPostText();
 };
 
-canvas.onmousedown = e => { if (currentImg) { isDragging = true; lastMouse = { x: e.clientX, y: e.clientY }; } };
-window.onmousemove = e => {
+function startImageDrag(e) {
+    if (!currentImg) return;
+    isDragging = true;
+    lastMouse = { x: e.clientX, y: e.clientY };
+    if (e.pointerId !== undefined) canvas.setPointerCapture(e.pointerId);
+}
+
+function moveImage(e) {
     if (!isDragging || !currentImg) return;
+    e.preventDefault();
     const dx = (e.clientX - lastMouse.x) / canvas.clientWidth;
     const dy = (e.clientY - lastMouse.y) / canvas.clientHeight;
     imgOffset.x = Math.max(0, Math.min(1, imgOffset.x - dx));
     imgOffset.y = Math.max(0, Math.min(1, imgOffset.y - dy));
     lastMouse = { x: e.clientX, y: e.clientY };
     draw();
-};
-window.onmouseup = () => isDragging = false;
+}
+
+function stopImageDrag(e) {
+    isDragging = false;
+    if (e && e.pointerId !== undefined && canvas.hasPointerCapture(e.pointerId)) {
+        canvas.releasePointerCapture(e.pointerId);
+    }
+}
+
+canvas.onpointerdown = startImageDrag;
+canvas.onpointermove = moveImage;
+canvas.onpointerup = stopImageDrag;
+canvas.onpointercancel = stopImageDrag;
 
 // --- Rendering Engine ---
 function draw() {

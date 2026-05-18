@@ -13,9 +13,15 @@
 
     <div class="app-container">
         <div class="controls">
-            <h2 style="font-size: 1.1rem; margin: 0 0 25px;">FF14 Photo Framer</h2>
+            <h2 class="app-title">FF14 Photo Framer</h2>
 
-            <div class="control-group">
+            <div class="control-group image-control">
+                <label>Image</label>
+                <button type="button" id="selectImageBtn" class="file-select-button">Select Image</button>
+                <input type="file" id="upload" accept="image/*">
+            </div>
+
+            <div class="control-group aspect-control">
                 <label>1. Aspect Ratio</label>
                 <div class="toggle-group">
                     <button id="setStandard" class="active">Standard</button>
@@ -24,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group orientation-control">
                 <label>2. Orientation</label>
                 <div class="toggle-group" id="orientationGroup">
                     <button id="setVertical" class="active">Vertical</button>
@@ -32,36 +38,34 @@
                 </div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group filter-control">
                 <label>3. Select Filter</label>
                 <div id="filterSelector"></div>
             </div>
 
-            <div class="control-group">
+            <div class="control-group strength-control">
                 <label>4. Filter Strength</label>
                 <input type="range" id="filterRange" min="0" max="100" value="50">
             </div>
 
-            <div class="control-group">
+            <div class="control-group text-control">
                 <label>5. Info Text (Auto Region)</label>
                 <input type="text" id="posInput" placeholder="Location Name ( 0.0 , 0.0 )" maxlength="100">
             </div>
 
-            <div class="control-group">
+            <div class="control-group post-control">
                 <label>6. Post Text</label>
-                <textarea id="xPostText"
-                    style="width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 6px; font-size: 0.9rem; box-sizing: border-box; resize: vertical; font-family: inherit;"
-                    rows="3"></textarea>
+                <textarea id="xPostText" rows="3"></textarea>
             </div>
 
             <button id="downloadBtn">Export Image</button>
             <button id="copyBtn">Copy Text for X</button>
-            <input type="file" id="upload" accept="image/*" style="display:none">
         </div>
 
         <div class="preview-area" id="dropZone">
             <canvas id="mainCanvas"></canvas>
-            <div id="dropHint" class="drop-hint">Drop Image Here or Click to Start</div>
+            <button type="button" id="dropHint" class="drop-hint">Select Image</button>
+            <button type="button" id="changeImageBtn" class="preview-file-button">Change Image</button>
         </div>
     </div>
 
